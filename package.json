@@ -5,9 +5,16 @@
   "homepage": "https://rubixstudios.com.au",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rubixstudios/payload.git",
+    "url": "https://github.com/rubixvi/email-unsend.git",
     "directory": "packages/email-unsend"
   },
+  "keywords": [
+    "payload",
+    "payloadcms",
+    "email",
+    "unsend",
+    "adapter"
+  ],
   "license": "MIT",
   "author": "Rubix Studios <hello@rubixstudios.com.au> (https://rubixstudios.com.au)",
   "maintainers": [
