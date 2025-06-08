@@ -1,0 +1,33 @@
+# Unsend REST Email Adapter
+
+This adapter allows you to send emails using the [Unsend](https://unsend.dev) REST API.
+
+## Installation
+
+```sh
+pnpm add @rubixstudios/email-unsend
+```
+
+## Usage
+
+- Sign up for a [Unsend](https://unsend.dev) account
+- Set up a domain
+- Create an API key
+- Set API key as UNSEND_API_KEY environment variable
+- Configure your Payload config
+
+- For selfhosting set your Unsend URL as UNSEND_URL enviroment variable
+
+```ts
+// payload.config.js
+import { unsendAdapter } from '@rubixstudios/email-unsend'
+
+export default buildConfig({
+  email: unsendAdapter({
+    defaultFromAddress: 'hello@rubixstudios.com.au',
+    defaultFromName: 'Rubix Studios',
+    apiKey: process.env.UNSEND_API_KEY || '',
+    unsendurl: process.env.UNSEND_URL || ''
+  }),
+})
+```
