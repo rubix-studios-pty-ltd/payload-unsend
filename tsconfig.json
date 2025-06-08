@@ -6,11 +6,18 @@
       "DOM.Iterable",
       "ES2022"
     ],
-    "rootDir": "./",
+    "outDir": "dist",
+    "rootDir": "src",
     "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "noImplicitAny": false,
@@ -21,6 +28,7 @@
     "emitDeclarationOnly": true,
     "target": "ES2022",
     "composite": true,
+    "types": ["jest", "node", "@types/jest"],
     "plugins": [
       {
         "name": "next"
@@ -32,4 +40,12 @@
     "./src/**/*.tsx",
     "./dev/next-env.d.ts"
   ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx"
+  ]
 }
