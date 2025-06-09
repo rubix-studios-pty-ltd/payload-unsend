@@ -24,6 +24,12 @@ type UnsendResponse = { emailId: string } | UnsendError
  */
 export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
   const { apiKey, defaultFromAddress, defaultFromName, unsendurl } = args
+  console.debug(`Using the following data`, {
+    apiKey,
+    defaultFromAddress,
+    defaultFromName,
+    unsendurl,
+  })
 
   const adapter: UnsendAdapter = () => ({
     name: 'unsend-rest',
@@ -38,7 +44,8 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
       )
 
       const apiURL = `${unsendurl?.replace(/\/+$/, "")}/api/v1/emails`
-
+      console.debug(`Sending email to Unsend API at ${apiURL}`)
+      
       const res = await fetch(apiURL, {
         body: JSON.stringify(sendEmailOptions),
         headers: {
