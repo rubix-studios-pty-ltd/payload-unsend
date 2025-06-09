@@ -6,7 +6,7 @@ export type UnsendAdapterArgs = {
   apiKey: string
   defaultFromAddress: string
   defaultFromName: string
-  unsendurl: string
+  unsendurl?: string
 }
 
 type UnsendAdapter = EmailAdapter<UnsendResponse>
@@ -17,7 +17,7 @@ type UnsendError = {
   statusCode: number
 }
 
-type UnsendResponse = { id: string } | UnsendError
+type UnsendResponse = { emailId: string } | UnsendError
 
 /**
  * Email adapter for [Unsend](https://unsend.dev) REST API
@@ -48,7 +48,7 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
 
       const data = (await res.json()) as UnsendResponse
 
-      if ('id' in data) {
+      if ('emailId' in data) {
         return data
       } else {
         const statusCode = data.statusCode || res.status

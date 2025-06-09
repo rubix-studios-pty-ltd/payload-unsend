@@ -24,7 +24,7 @@ describe('email-unsend', () => {
   global.fetch = jest.spyOn(global, 'fetch').mockImplementation(
     (_input: RequestInfo | URL, _init?: RequestInit) =>
       Promise.resolve({
-        json: () => Promise.resolve({ id: 'test-id' }),
+        json: () => Promise.resolve({ emailId: 'test-id' }),
         ok: true,
         status: 200,
       } as Response)
