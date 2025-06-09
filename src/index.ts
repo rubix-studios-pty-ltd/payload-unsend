@@ -24,21 +24,13 @@ type UnsendResponse = { emailId: string } | UnsendError
  */
 export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
   const { apiKey, defaultFromAddress, defaultFromName, unsendurl } = args
-  const apiURL = `${unsendurl?.replace(/\/+$/, "")}/api/v1/emails`
-
-  console.log(`Using the following data`, {
-    apiKey,
-    defaultFromAddress,
-    defaultFromName,
-    unsendurl,
-  })
-  console.log(`Unsend API URL: ${apiURL}`)
 
   const adapter: UnsendAdapter = () => ({
     name: 'unsend-rest',
     defaultFromAddress,
     defaultFromName,
     sendEmail: async (message) => {
+      try {
       // Map the Payload email options to Unsend email options
       const sendEmailOptions = mapPayloadEmailToUnsendEmail(
         message,
@@ -46,7 +38,7 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
         defaultFromName,
       )
 
-      const res = await fetch(apiURL, {
+      const res = await fetch(`${unsendurl}/api/v1/emails`, {
         body: JSON.stringify(sendEmailOptions),
         headers: {
           Authorization: `Bearer ${apiKey}`,
@@ -57,18 +49,31 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
 
       const data = (await res.json()) as UnsendResponse
 
-      if ('emailId' in data) {
-        return data
-      } else {
-        const statusCode = data.statusCode || res.status
-        let formattedError = `Error sending email: ${statusCode}`
-        if (data.name && data.message) {
-          formattedError += ` ${data.name} - ${data.message}`
-        }
+    if ('emailId' in data) {
+      return data
+    }
 
-        throw new APIError(formattedError, statusCode)
+    // If we get here, it's an error response
+        throw new APIError(JSON.stringify({
+          error: 'Email sending failed',
+          request: {
+            options: sendEmailOptions,
+            url: unsendurl,
+          },
+          response: {
+            data,
+            status: res.status,
+          }
+        }, null, 2), res.status)
+
+      } catch (error) {
+        // Catch any other errors (like network errors) and format them similarly
+        throw new APIError(JSON.stringify({
+          details: error instanceof Error ? error.message : String(error),
+          error: 'Email sending failed'
+        }, null, 2), 500)
       }
-    },
+    }
   })
 
   return adapter
@@ -215,6 +220,12 @@ type UnsendSendEmailOptions = {
    * @link https://docs.unsend.dev/api-reference/emails/send-email#body-to
    */
   to: string | string[]
+  /**
+   * Email variables
+   *
+   * @link https://docs.unsend.dev/api-reference/emails/send-email#body-variables
+   */
+  variables?: Record<string, string>
 }
 
 type Attachment = {
