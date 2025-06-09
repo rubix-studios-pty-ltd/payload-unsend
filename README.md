@@ -2,6 +2,8 @@
 
 This adapter allows PayloadCMS to send emails using the [Unsend](https://unsend.dev) REST API.
 
+[![npm version](https://img.shields.io/npm/v/@rubixstudios/email-unsend.svg)](https://www.npmjs.com/package/@rubixstudios/email-unsend)
+
 ## Installation
 
 ```sh
