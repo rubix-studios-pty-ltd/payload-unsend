@@ -12,9 +12,10 @@ export type UnsendAdapterArgs = {
 type UnsendAdapter = EmailAdapter<UnsendResponse>
 
 type UnsendError = {
-  message: string
-  name: string
-  statusCode: number
+  error: {
+    code: string
+    message: string
+  }
 }
 
 type UnsendResponse = { emailId: string } | UnsendError
@@ -30,8 +31,6 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
     defaultFromAddress,
     defaultFromName,
     sendEmail: async (message) => {
-      try {
-      // Map the Payload email options to Unsend email options
       const sendEmailOptions = mapPayloadEmailToUnsendEmail(
         message,
         defaultFromAddress,
@@ -48,32 +47,19 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
       })
 
       const data = (await res.json()) as UnsendResponse
+      
+      if ('emailId' in data) {
+        return data
+      } else {
+        const statusCode = res.status
+        let formattedError = `Error sending email: ${statusCode}`
+        if ('error' in data) {
+          formattedError += ` ${data.error.code} - ${data.error.message}`
+        }
 
-    if ('emailId' in data) {
-      return data
-    }
-
-    // If we get here, it's an error response
-        throw new APIError(JSON.stringify({
-          error: 'Email sending failed',
-          request: {
-            options: sendEmailOptions,
-            url: unsendurl,
-          },
-          response: {
-            data,
-            status: res.status,
-          }
-        }, null, 2), res.status)
-
-      } catch (error) {
-        // Catch any other errors (like network errors) and format them similarly
-        throw new APIError(JSON.stringify({
-          details: error instanceof Error ? error.message : String(error),
-          error: 'Email sending failed'
-        }, null, 2), 500)
+        throw new APIError(formattedError, statusCode)
       }
-    }
+    },
   })
 
   return adapter

@@ -60,9 +60,10 @@ describe('email-unsend', () => {
 
   it('should throw an error if the email fails to send', async () => {
     const errorResponse = {
-      name: 'validation_error',
-      message: 'error information',
-      statusCode: 403,
+      error: {
+        code: 'FORBIDDEN',
+        message: 'Invalid API token'
+      }
     }
     global.fetch = jest.spyOn(global, 'fetch').mockImplementation(
       (_input: RequestInfo | URL, _init?: RequestInit) =>
@@ -88,7 +89,7 @@ describe('email-unsend', () => {
         to,
       }),
     ).rejects.toThrow(
-      `Error sending email: ${errorResponse.statusCode} ${errorResponse.name} - ${errorResponse.message}`,
+      `Error sending email: 403 ${errorResponse.error.code}`,
     )
   })
 })
