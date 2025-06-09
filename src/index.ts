@@ -55,8 +55,11 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
         method: 'POST',
       })
 
-      const data = (await res.json()) as UnsendResponse
+      console.log("Final email payload:", JSON.stringify(sendEmailOptions, null, 2))
 
+      const data = (await res.json()) as UnsendResponse
+      console.log("Response from Unsend API:", JSON.stringify(data, null, 2))
+      
       if ('emailId' in data) {
         return data
       } else {
