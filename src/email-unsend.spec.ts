@@ -43,9 +43,10 @@ describe('email-unsend', () => {
       text,
       to,
     })
-
+    
+    const apiURL = `${unsendurl?.replace(/\/+$/, "")}/api/v1/emails`
     // @ts-expect-error Mock fetch doesn't have a type definition
-    expect(global.fetch.mock.calls[0][0]).toStrictEqual(`${unsendurl}/api/v1/emails`)
+    expect(global.fetch.mock.calls[0][0]).toStrictEqual(apiURL)
     // @ts-expect-error Mock fetch doesn't have a type definition
     const request = global.fetch.mock.calls[0][1]
     expect(request.headers.Authorization).toStrictEqual(`Bearer ${apiKey}`)

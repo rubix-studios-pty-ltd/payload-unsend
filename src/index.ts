@@ -37,7 +37,9 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
         defaultFromName,
       )
 
-      const res = await fetch(`${unsendurl}/api/v1/emails`, {
+      const apiURL = `${unsendurl?.replace(/\/+$/, "")}/api/v1/emails`
+
+      const res = await fetch(apiURL, {
         body: JSON.stringify(sendEmailOptions),
         headers: {
           Authorization: `Bearer ${apiKey}`,
