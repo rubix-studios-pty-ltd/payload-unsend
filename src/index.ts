@@ -102,6 +102,9 @@ function mapPayloadEmailToUnsendEmail(
   if (message.replyTo && message.replyTo.length > 0) {
     emailOptions.replyTo = mapAddresses(message.replyTo)
   }
+  if (message.html && message.html.toString().trim().length > 0) {
+    emailOptions.html = message.html.toString()
+  }
   if (message.text && message.text.toString().trim().length > 0) {
     emailOptions.text = message.text.toString()
   } else {
