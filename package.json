@@ -1,15 +1,15 @@
 {
-  "name": "@rubixstudios/email-unsend",
+  "name": "@rubixstudios/payload-unsend",
   "version": "1.10.6",
   "description": "Payload Unsend Email Adapter",
   "homepage": "https://rubixstudios.com.au",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rubix-studios-pty-ltd/email-unsend.git",
-    "directory": "packages/email-unsend"
+    "url": "https://github.com/rubix-studios-pty-ltd/payload-unsend.git",
+    "directory": "packages/payload-unsend"
   },
   "bugs": {
-    "url": "https://github.com/rubix-studios-pty-ltd/email-unsend/issues"
+    "url": "https://github.com/rubix-studios-pty-ltd/payload-unsend/issues"
   },
   "keywords": [
     "payload",
