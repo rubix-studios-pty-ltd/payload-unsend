@@ -5,11 +5,11 @@
   "homepage": "https://rubixstudios.com.au",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rubix-Studios-Pty-Ltd/email-unsend.git",
+    "url": "https://github.com/rubix-studios-pty-ltd/email-unsend.git",
     "directory": "packages/email-unsend"
   },
   "bugs": {
-    "url": "https://github.com/Rubix-Studios-Pty-Ltd/email-unsend/issues"
+    "url": "https://github.com/rubix-studios-pty-ltd/email-unsend/issues"
   },
   "keywords": [
     "payload",
