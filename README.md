@@ -1,6 +1,6 @@
 # Unsend REST Email Adapter
 
-This adapter allows you to send emails using the [Unsend](https://unsend.dev) REST API.
+This adapter allows PayloadCMS to send emails using the [Unsend](https://unsend.dev) REST API.
 
 ## Installation
 

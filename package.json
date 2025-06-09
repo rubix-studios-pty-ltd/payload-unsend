@@ -1,6 +1,6 @@
 {
   "name": "@rubixstudios/email-unsend",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "Payload Unsend Email Adapter",
   "homepage": "https://rubixstudios.com.au",
   "repository": {
@@ -13,7 +13,9 @@
     "payloadcms",
     "email",
     "unsend",
-    "adapter"
+    "adapter",
+    "plugin",
+    "rubixstudios"
   ],
   "license": "MIT",
   "author": "Rubix Studios <hello@rubixstudios.com.au> (https://rubixstudios.com.au)",
