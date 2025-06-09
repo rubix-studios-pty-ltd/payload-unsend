@@ -4,7 +4,7 @@ import { jest } from '@jest/globals'
 
 import { unsendAdapter } from './index.js'
 
-describe('email-unsend', () => {
+describe('payload-unsend', () => {
   const defaultFromAddress = 'hello@rubixstudios.com.au'
   const defaultFromName = 'Rubix Studios'
   const apiKey = 'test-api-key'
