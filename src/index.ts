@@ -84,22 +84,33 @@ function mapPayloadEmailToUnsendEmail(
   defaultFromAddress: string,
   defaultFromName: string,
 ): UnsendSendEmailOptions {
-  return {
-    // Required
+  const emailOptions: Partial<UnsendSendEmailOptions> = {
     from: mapFromAddress(message.from, defaultFromName, defaultFromAddress),
+    html: message.html?.toString() || '',
     subject: message.subject ?? '',
     to: mapAddresses(message.to),
+  }
 
-    // Other To fields
-    bcc: mapAddresses(message.bcc),
-    cc: mapAddresses(message.cc),
-    replyTo: mapAddresses(message.replyTo),
+  if (message.bcc) {
+    emailOptions.bcc = mapAddresses(message.bcc)
+  }
+  if (message.cc) {
+    emailOptions.cc = mapAddresses(message.cc)
+  }
+  if (message.replyTo) {
+    emailOptions.replyTo = mapAddresses(message.replyTo)
+  }
+  if (message.text) {
+    emailOptions.text = message.text.toString()
+  }
+  if (message.attachments?.length) {
+    emailOptions.attachments = mapAttachments(message.attachments)
+  }
+  if (message.variables) {
+    emailOptions.variables = message.variables
+  }
 
-    // Optional
-    attachments: mapAttachments(message.attachments),
-    html: message.html?.toString() || '',
-    text: message.text?.toString() || '',
-  } as UnsendSendEmailOptions
+  return emailOptions as UnsendSendEmailOptions
 }
 
 function mapFromAddress(
