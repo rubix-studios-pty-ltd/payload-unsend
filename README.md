@@ -14,9 +14,8 @@ pnpm add @rubixstudios/email-unsend
 - Set up a domain
 - Create an API key
 - Set API key as UNSEND_API_KEY environment variable
+- Set your Unsend base url as UNSEND_URL environment variable
 - Configure your Payload config
-
-- For selfhosting set your Unsend URL as UNSEND_URL enviroment variable
 
 ```ts
 // payload.config.js
@@ -27,7 +26,7 @@ export default buildConfig({
     defaultFromAddress: 'hello@rubixstudios.com.au',
     defaultFromName: 'Rubix Studios',
     apiKey: process.env.UNSEND_API_KEY || '',
-    unsendurl: process.env.UNSEND_URL || ''
+    unsendurl: process.env.UNSEND_URL || 'https://rubixstudios.com.au'
   }),
 })
 ```
