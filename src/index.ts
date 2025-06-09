@@ -86,25 +86,26 @@ function mapPayloadEmailToUnsendEmail(
 ): UnsendSendEmailOptions {
   const emailOptions: Partial<UnsendSendEmailOptions> = {
     from: mapFromAddress(message.from, defaultFromName, defaultFromAddress),
-    html: message.html?.toString() || '',
     subject: message.subject ?? '',
     to: mapAddresses(message.to),
   }
 
-  if (message.bcc) {
-    emailOptions.bcc = mapAddresses(message.bcc)
-  }
-  if (message.cc) {
-    emailOptions.cc = mapAddresses(message.cc)
-  }
-  if (message.replyTo) {
-    emailOptions.replyTo = mapAddresses(message.replyTo)
-  }
-  if (message.text) {
-    emailOptions.text = message.text.toString()
-  }
   if (message.attachments?.length) {
     emailOptions.attachments = mapAttachments(message.attachments)
+  }
+  if (message.bcc && message.bcc.length > 0) {
+    emailOptions.bcc = mapAddresses(message.bcc)
+  }
+  if (message.cc && message.cc.length > 0) {
+    emailOptions.cc = mapAddresses(message.cc)
+  }
+  if (message.replyTo && message.replyTo.length > 0) {
+    emailOptions.replyTo = mapAddresses(message.replyTo)
+  }
+  if (message.text && message.text.toString().trim().length > 0) {
+    emailOptions.text = message.text.toString()
+  } else {
+    emailOptions.text = "Please view this email in an HTML-compatible client."
   }
   if (message.variables) {
     emailOptions.variables = message.variables
