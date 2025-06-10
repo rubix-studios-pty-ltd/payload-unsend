@@ -6,7 +6,11 @@ export type UnsendAdapterArgs = {
   apiKey: string
   defaultFromAddress: string
   defaultFromName: string
+  scheduleAt?: Date | string;
+  scheduleOffset?: string
+  templateId?: string
   unsendurl: string
+  variables?: Record<string, string>
 }
 
 type UnsendAdapter = EmailAdapter<UnsendResponse>
@@ -59,7 +63,7 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
 
         throw new APIError(formattedError, statusCode)
       }
-    },
+    }
   })
 
   return adapter
@@ -72,10 +76,28 @@ function mapPayloadEmailToUnsendEmail(
 ): UnsendSendEmailOptions {
   const emailOptions: Partial<UnsendSendEmailOptions> = {
     from: mapFromAddress(message.from, defaultFromName, defaultFromAddress),
-    subject: message.subject ?? '',
     to: mapAddresses(message.to),
   }
 
+  if (message.templateId) {
+    emailOptions.templateId = message.templateId;
+    if (message.variables && Object.keys(message.variables).length > 0) {
+      emailOptions.variables = message.variables
+    }
+  } else {
+    emailOptions.subject = message.subject ?? '';
+
+    if (message.html && message.html.toString().trim().length > 0) {
+      emailOptions.html = message.html.toString()
+    }
+
+    if (message.text && message.text.toString().trim().length > 0) {
+      emailOptions.text = message.text;
+    } else {
+      emailOptions.text = 'Please view this email in an HTML-compatible client.';
+    }
+  }
+  
   if (message.attachments?.length) {
     emailOptions.attachments = mapAttachments(message.attachments)
   }
@@ -88,16 +110,15 @@ function mapPayloadEmailToUnsendEmail(
   if (message.replyTo && message.replyTo.length > 0) {
     emailOptions.replyTo = mapAddresses(message.replyTo)
   }
-  if (message.html && message.html.toString().trim().length > 0) {
-    emailOptions.html = message.html.toString()
-  }
-  if (message.text && message.text.toString().trim().length > 0) {
-    emailOptions.text = message.text.toString()
-  } else {
-    emailOptions.text = "Please view this email in an HTML-compatible client."
-  }
-  if (message.variables) {
-    emailOptions.variables = message.variables
+  if (message.scheduleAt) {
+    const scheduleDate =
+      message.scheduleAt instanceof Date
+        ? message.scheduleAt.toISOString()
+        : new Date(message.scheduleAt).toISOString();
+    emailOptions.scheduleAt = scheduleDate;
+  } else if (message.scheduleOffset) {
+    const scheduleDate = new Date(Date.now() + message.scheduleOffset);
+    emailOptions.scheduleAt = scheduleDate.toISOString();
   }
 
   return emailOptions as UnsendSendEmailOptions
@@ -149,14 +170,14 @@ function mapAttachments(
 
     if (typeof attachment.content === 'string') {
       return {
-        content: Buffer.from(attachment.content),
+        content: Buffer.from(attachment.content).toString('base64'),
         filename: attachment.filename,
       }
     }
 
     if (attachment.content instanceof Buffer) {
       return {
-        content: attachment.content,
+        content: attachment.content.toString('base64'),
         filename: attachment.filename,
       }
     }
@@ -204,11 +225,27 @@ type UnsendSendEmailOptions = {
    */
   replyTo?: string | string[]
   /**
+   * The date and time to send the email. If not provided, the email will be sent immediately.
+   * 
+   * @link https://docs.unsend.dev/api-reference/emails/send-email#body-scheduled-at
+   */
+  scheduleAt?: string
+  /**
+   * The offset in milliseconds to apply to the scheduled time.
+   */
+  scheduleOffset?: string
+  /**
    * Email subject.
    *
    * @link https://docs.unsend.dev/api-reference/emails/send-email#body-subject
    */
   subject: string
+  /**
+   * The unique identifier of the template to use for this email.
+   * 
+   * @link https://docs.unsend.dev/api-reference/emails/send-email#body-template-id
+   */
+  templateId?: string
   /**
    * The plain text version of the message.
    *
