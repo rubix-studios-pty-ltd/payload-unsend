@@ -199,7 +199,6 @@ type UnsendSendEmailOptions = {
    * @link https://docs.unsend.dev/api-reference/emails/send-email#body-bcc
    */
   bcc?: string | string[]
-
   /**
    * Carbon copy recipient email address. For multiple addresses, send as an array of strings.
    *
@@ -259,7 +258,7 @@ type UnsendSendEmailOptions = {
    */
   to: string | string[]
   /**
-   * Email variables
+   * Email template variables. Allows for dynamic content in the email template.
    *
    * @link https://docs.unsend.dev/api-reference/emails/send-email#body-variables
    */
