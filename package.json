@@ -17,8 +17,7 @@
     "email",
     "unsend",
     "adapter",
-    "plugin",
-    "rubixstudios"
+    "plugin"
   ],
   "license": "MIT",
   "author": "Rubix Studios <hello@rubixstudios.com.au> (https://rubixstudios.com.au)",
@@ -84,8 +83,7 @@
     },
     "main": "./dist/index.js",
     "registry": "https://registry.npmjs.org/",
-    "types": "./dist/index.d.ts",
-    "access": "public"
+    "types": "./dist/index.d.ts"
   },
   "dependencies": {
     "@payloadcms/eslint-config": "^3.28.0"
