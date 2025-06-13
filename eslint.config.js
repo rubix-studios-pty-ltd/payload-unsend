@@ -10,6 +10,7 @@ export const defaultESLintIgnores = [
   '**/.svn',
   '**/playwright.config.ts',
   '**/jest.config.js',
+  '**/email-unsend.spec.ts',
   '**/tsconfig.tsbuildinfo',
   '**/README.md',
   '**/eslint.config.js',
