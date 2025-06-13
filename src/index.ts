@@ -6,11 +6,7 @@ export type UnsendAdapterArgs = {
   apiKey: string
   defaultFromAddress: string
   defaultFromName: string
-  scheduleAt?: Date | string;
-  scheduleOffset?: string
-  templateId?: string
   unsendurl: string
-  variables?: Record<string, string>
 }
 
 type UnsendAdapter = EmailAdapter<UnsendResponse>
@@ -63,7 +59,7 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
 
         throw new APIError(formattedError, statusCode)
       }
-    }
+    },
   })
 
   return adapter
@@ -76,26 +72,18 @@ function mapPayloadEmailToUnsendEmail(
 ): UnsendSendEmailOptions {
   const emailOptions: Partial<UnsendSendEmailOptions> = {
     from: mapFromAddress(message.from, defaultFromName, defaultFromAddress),
+    subject: message.subject ?? '',
     to: mapAddresses(message.to),
   }
 
-  if (message.templateId) {
-    emailOptions.templateId = message.templateId;
-    if (message.variables && Object.keys(message.variables).length > 0) {
-      emailOptions.variables = message.variables
-    }
+  if (message.html && message.html.toString().trim().length > 0) {
+    emailOptions.html = message.html.toString()
+  }
+
+  if (message.text && message.text.toString().trim().length > 0) {
+    emailOptions.text = message.text;
   } else {
-    emailOptions.subject = message.subject ?? '';
-
-    if (message.html && message.html.toString().trim().length > 0) {
-      emailOptions.html = message.html.toString()
-    }
-
-    if (message.text && message.text.toString().trim().length > 0) {
-      emailOptions.text = message.text;
-    } else {
-      emailOptions.text = 'Please view this email in an HTML-compatible client.';
-    }
+    emailOptions.text = 'Please view this email in an HTML-compatible client.';
   }
   
   if (message.attachments?.length) {
@@ -109,16 +97,6 @@ function mapPayloadEmailToUnsendEmail(
   }
   if (message.replyTo && message.replyTo.length > 0) {
     emailOptions.replyTo = mapAddresses(message.replyTo)
-  }
-  if (message.scheduleAt) {
-    const scheduleDate =
-      message.scheduleAt instanceof Date
-        ? message.scheduleAt.toISOString()
-        : new Date(message.scheduleAt).toISOString();
-    emailOptions.scheduleAt = scheduleDate;
-  } else if (message.scheduleOffset) {
-    const scheduleDate = new Date(Date.now() + message.scheduleOffset);
-    emailOptions.scheduleAt = scheduleDate.toISOString();
   }
 
   return emailOptions as UnsendSendEmailOptions
