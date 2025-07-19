@@ -59,16 +59,16 @@
   "devDependencies": {
     "@jest/globals": "30.0.4",
     "@swc/cli": "^0.7.8",
-    "@swc/core": "^1.12.14",
+    "@swc/core": "^1.13.0",
     "@swc/jest": "^0.2.39",
     "@types/jest": "30.0.0",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.0.15",
     "eslint": "^9.31.0",
-    "eslint-config-next": "15.4.1",
+    "eslint-config-next": "15.4.2",
     "jest": "^30.0.4",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.4.0",
-    "turbo": "^2.5.4",
+    "turbo": "^2.5.5",
     "typescript": "5.8.3"
   },
   "peerDependencies": {
