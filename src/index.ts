@@ -82,7 +82,7 @@ function mapPayloadEmailToUnsendEmail(
 ): UnsendSendEmailOptions {
   const emailOptions: Partial<UnsendSendEmailOptions> = {
     from: mapFromAddress(message.from, defaultFromName, defaultFromAddress),
-    subject: message.subject ?? '',
+    subject: message.subject ?? 'No subject provided',
     to: mapAddresses(message.to),
   }
 
@@ -222,7 +222,7 @@ type UnsendSendEmailOptions = {
    *
    * @link https://docs.unsend.dev/api-reference/emails/send-email#body-subject
    */
-  subject: string
+  subject?: string
   /**
    * The unique identifier of the template to use for this email.
    * 
