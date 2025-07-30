@@ -6,7 +6,10 @@ export type UnsendAdapterArgs = {
   apiKey: string
   defaultFromAddress: string
   defaultFromName: string
+  scheduledAt?: string
+  templateId?: string
   unsendurl: string
+  variables?: Record<string, string>
 }
 
 type UnsendAdapter = EmailAdapter<UnsendResponse>
@@ -24,7 +27,7 @@ type UnsendResponse = { emailId: string } | UnsendError
  * Email adapter for [Unsend](https://unsend.dev) REST API
  */
 export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
-  const { apiKey, defaultFromAddress, defaultFromName, unsendurl } = args
+  const { apiKey, defaultFromAddress, defaultFromName, scheduledAt, templateId, unsendurl, variables } = args
 
   const adapter: UnsendAdapter = () => ({
     name: 'unsend-rest',
@@ -37,8 +40,15 @@ export const unsendAdapter = (args: UnsendAdapterArgs): UnsendAdapter => {
         defaultFromName,
       )
 
+      const payload = {
+        ...sendEmailOptions,
+        ...(scheduledAt ? { scheduledAt } : {}),
+        ...(templateId ? { templateId } : {}),
+        ...(variables ? { variables } : {}),
+      }
+
       const res = await fetch(`${unsendurl}/api/v1/emails`, {
-        body: JSON.stringify(sendEmailOptions),
+        body: JSON.stringify(payload),
         headers: {
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
@@ -206,11 +216,7 @@ type UnsendSendEmailOptions = {
    * 
    * @link https://docs.unsend.dev/api-reference/emails/send-email#body-scheduled-at
    */
-  scheduleAt?: string
-  /**
-   * The offset in milliseconds to apply to the scheduled time.
-   */
-  scheduleOffset?: string
+  scheduledAt?: string
   /**
    * Email subject.
    *

@@ -29,6 +29,10 @@ export default buildConfig({
     defaultFromName: 'Rubix Studios',
     apiKey: process.env.UNSEND_API_KEY || '',
     unsendurl: process.env.UNSEND_URL || 'https://rubixstudios.com.au'
+    // Optional:
+    // templateId: 'template-uuid',
+    // scheduledAt: '2025-08-01T10:00:00Z',
+    // variables: { firstName: 'Vincent' }
   }),
 })
 ```
