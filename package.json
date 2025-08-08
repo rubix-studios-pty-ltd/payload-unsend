@@ -52,7 +52,7 @@
     "clean": "rimraf -g {dist,*.tsbuildinfo}",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "update": "pnpx npm-check-updates -u && pnpm install",
+    "update": "pnpm update && pnpm install && pnpm prune && pnpm dedupe",
     "prepublishOnly": "pnpm clean && pnpm turbo build",
     "test": "jest"
   },
@@ -62,12 +62,12 @@
     "@swc/core": "^1.13.3",
     "@swc/jest": "^0.2.39",
     "@types/jest": "30.0.0",
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.2.0",
     "eslint": "^9.32.0",
     "eslint-config-next": "15.4.5",
     "jest": "^30.0.5",
     "rimraf": "^6.0.1",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "turbo": "^2.5.5",
     "typescript": "5.9.2"
   },
